@@ -83,7 +83,7 @@ class TestImageDownloader(unittest.TestCase):
             def __close_request(self, request):
                 return
             def get_xhtml(self, url):
-                xhtml_doc = '<html><img src="/static/img/beddit_logo.png" class="logo">"></img></html>'
+                xhtml_doc = '<html><img src="/static/img/beddit_logo.png?q=1" class="logo">"></img></html>'
                 base_url = 'http://beddit.com'
                 query = None
                 return (xhtml_doc, base_url, query)

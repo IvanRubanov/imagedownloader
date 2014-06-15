@@ -98,7 +98,7 @@ class ImageDownloader:
             urls = self.get_urls(args)
         except TypeError, e:
             self.__logger.error('fatal-error-occured-during-downloading-images  error = %s', e)
-            raise e
+            self.__print_usage_instructions()
         else:
             if len(urls) > 0:
                 try:

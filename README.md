@@ -7,5 +7,11 @@ Application is following redirects. Saves images defined in relative and absolut
 
 Application doesn't support CSS & base64 encoded uris.
 
+To run unit tests: python -m unittest discover
+
+For html/xml parsing was used BeautifulSoup.
+
 Usage: ./imagedownloader.py <list of urls>
 Example: ./imagedownloader.py google.com yahoo.com http://beddit.com
+
+Licence: BSD.
