@@ -13,6 +13,7 @@ from logging import Logger
 from httphandler import HttpHandler
 from imagedownloader import ImageDownloader
 
+
 class TestImageDownloader(unittest.TestCase):
     def setUp(self):
         self.logger = logging.getLogger(config.default_logger_tag)
@@ -26,16 +27,16 @@ class TestImageDownloader(unittest.TestCase):
 
         url = self.image_downloader.normalize_url('b.com')
         self.assertEqual('http://b.com', url)
-        
+
         url = self.image_downloader.normalize_url('/a.png', 'http://b.com')
         self.assertEqual('http://b.com/a.png', url)
-        
+
         url = self.image_downloader.normalize_url('/a.png', 'http://b.com', 'q=1')
         self.assertEqual('http://b.com/a.png?q=1', url)
-        
+
         url = self.image_downloader.normalize_url('//b.com/a.png')
         self.assertEqual('http://b.com/a.png', url)
-        
+
         url = self.image_downloader.normalize_url('//b.com/a.png', None, 'q=1')
         self.assertEqual('http://b.com/a.png?q=1', url)
 
@@ -43,7 +44,7 @@ class TestImageDownloader(unittest.TestCase):
         with self.assertRaises(TypeError):
             self.image_downloader.get_urls(None)
             self.image_downloader.get_urls([])
-        
+
         urls = self.image_downloader.get_urls(['a'])
         self.assertEqual(1, len(urls))
 
@@ -53,20 +54,22 @@ class TestImageDownloader(unittest.TestCase):
         urls = self.image_downloader.get_urls(['a', 'b', 'c'])
         self.assertEqual(3, len(urls))
 
-
     def test_download_images(self):
         class TestHttpHandlerRaiseAlways():
             def get_request(self, url):
                 raise URLError('Test url error in get_request')
+
             def __close_request(self, request):
                 return
+
             def get_xhtml(self, url):
                 raise URLError('Test url error in get_xhtml')
+
             def retrieve_image(self, url, filename):
                 raise URLError('Test url error in retrieve_image')
 
         class TestImageDownloader(ImageDownloader):
-             def get_formatted_date(self):
+            def get_formatted_date(self):
                 return 'test_out'
 
         try:
@@ -80,13 +83,16 @@ class TestImageDownloader(unittest.TestCase):
         class TestHttpHandler():
             def get_request(self, url):
                 return
+
             def __close_request(self, request):
                 return
+
             def get_xhtml(self, url):
                 xhtml_doc = '<html><img src="/static/img/beddit_logo.png?q=1" class="logo">"></img></html>'
                 base_url = 'http://beddit.com'
                 query = None
                 return (xhtml_doc, base_url, query)
+
             def retrieve_image(self, url, filename):
                 urllib.urlretrieve(url, 'beddit_logo.png')
 

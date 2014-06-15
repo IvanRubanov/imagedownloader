@@ -5,6 +5,7 @@ import os
 from urlparse import urlparse
 from urllib2 import URLError
 
+
 class HttpHandler:
     def __init__(self, logger):
         if logger is None:
@@ -17,7 +18,7 @@ class HttpHandler:
         """ See https://docs.python.org/2/library/urllib.html """
         request = None
         try:
-           request = urllib2.urlopen(url)
+            request = urllib2.urlopen(url)
         except urllib2.URLError, e:
             self.__logger.error('couldnt-establish-connection reason = %s url = %s', e, url)
             raise e
@@ -29,7 +30,7 @@ class HttpHandler:
 
     def __close_request(self, request):
         """ Close opened request """
-        if request is None :
+        if request is None:
             self.__logger.warn('couldnt-close-request reason = request is None')
         else:
             request.close()
@@ -43,7 +44,6 @@ class HttpHandler:
         pbu = urlparse(base_url)
         base_url = pbu.scheme + '://' + pbu.netloc
         query = pbu.query
-        
         self.__close_request(request)
         return (xhtml_doc, base_url, query)
 

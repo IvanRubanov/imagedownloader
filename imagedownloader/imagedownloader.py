@@ -11,6 +11,7 @@ from urlparse import urlparse
 
 from httphandler import HttpHandler
 
+
 class ImageDownloader:
     def __init__(self, http_handler, logger):
         if http_handler is None:
@@ -30,20 +31,20 @@ class ImageDownloader:
         return str(datetime.datetime.now().strftime(config.default_date_format))
 
     def __create_out_directory(self):
-        """ Create output directory """ 
+        """ Create output directory """
         directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), str(self.get_formatted_date()))
         try:
             os.makedirs(directory)
         except os.error, e:
             self.__logger.error('couldnt-create-output-directory reason = %s', e)
-            raise e 
+            raise e
         return directory
 
     def normalize_url(self, url, base_url=None, query=None):
         """ Normalize url for further ugage """
-        """ Supports following rules: """ 
-        """ if url starts with default protocol (http) then return url without modifications """ 
-        """ if url starts with '//' then return url  = http:+url """ 
+        """ Supports following rules: """
+        """ if url starts with default protocol (http) then return url without modifications """
+        """ if url starts with '//' then return url  = http:+url """
         """ in any othe case adding 'http://' in front """
         if url is None or not url:
             self.__logger.error('couldnt-normalize-url reason = url is None or empty string')
