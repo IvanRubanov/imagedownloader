@@ -7,6 +7,7 @@ import logging
 import urllib2
 import datetime
 from bs4 import BeautifulSoup
+from urlparse import urlparse
 
 from httphandler import HttpHandler
 
@@ -47,11 +48,16 @@ class ImageDownloader:
         if url is None or not url:
             self.__logger.error('couldnt-normalize-url reason = url is None or empty string')
             raise TypeError('url must not be None or empty')
+        if url.startswith('data:image'):
+            self.__logger.warn('base64-encoded-image-found')
+            raise TypeError('application doesnt support base64 encoded data uris')
         if not url.startswith(config.default_protocol):
             if url.startswith('//'):
                 url = config.default_protocol + ':' + url
             else:
                 if base_url  is not None:
+                    if not url.startswith('/'):
+                        url = '/' + url
                     url = base_url + url
                 else:
                     url = config.default_protocol + '://' + url
@@ -109,7 +115,8 @@ class ImageDownloader:
                             query = doc[2]
                             img_urls = self.__get_src_urls(xhtml_doc, base_url)
                             for img_url in img_urls:
-                                filename = img_url.split('/')[-1]
+                                pbu = urlparse(img_url)
+                                filename = pbu.path.split('/')[-1]
                                 if len(filename) >= 255:
                                     filename = filename[-254:]
                                 filename = os.path.join(out_dir, filename)
